@@ -4,6 +4,8 @@ As part of a robotics university class that required specific trajectories to be
 
 Through careful examination of how these differ, one is able to better judge what parameters and, as a result, trajectories should be designed for a specific robot. Since, even when within the device's limits, as defined by the manufacturer, some trajectories might not always be possible in a real-life scenario.
 
+The math that lead up to the design of the trajectories is omitted, possibly to be added later (TODO).
+
 ## Setup Guide
 
 ### For running scripts within these packages
@@ -64,23 +66,58 @@ After designing three separate trajectories that, one by one:
 
 They were implemented in a simulation environment, with the results being as such:
 
-(placeholder for first set of img)
+**Trajectory 1:**
+
+Intended rotation | Actual rotation
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/1_ex1_question2_rotation_traj_1.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/3_ex1_question2_rotation_traj_1.png" width="400"/>
+
+Intended angular velocity | Actual angular velocity
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/2_ex1_question2_angular_traj_1.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/4_ex1_question2_angular_traj_1.png" width="400"/>
+
 
 While when comparing the robot's yaw (from ```/pose/position``` provided by topic ```/odom```) to rotation, they seem to align (maximum value is off 0.22 degrees), the angular velocity plot taken from the bag is evidently not as clean as expected, likely due to the fact that the robot is being given a different value for it after a set interval, which might cause irregularities (among them, a short correction in the end, not found in the original trajectory). Here that interval is 0.1 seconds, but even when shorter, similar plots appear.
 
-(placeholder for second set of img)
+**Trajectory 2:**
 
-These seem mostly accurate, other than a slight deviation in the final position (by a centimeter at most), possibly caused by unexpected behaviors, like the fact that during both the first and third trajectories, the robot did move slightly in the X-Y plane, while only being programmed to rotate.
+Intended translation in XY | Actual translation in XY
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/5_ex1_question2_position_traj_2.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/8_ex1_question2_position_traj_2.png" width="400"/>
 
-(placeholder for third set of img)
+Intended linear velocity | Actual linear velocity
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/7_ex1_question2_velocity_traj_2.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/10_ex1_question2_velocity_traj_2.png" width="400"/>
+
+These seem mostly accurate, other than a slight deviation in the final position (by a centimeter at most), possibly caused by unexpected behaviors, like the fact that during both the first and third trajectories, the robot did move slightly in the X-Y plane, while only being programmed to rotate. It is evident with a closer look on the linear velocity plot, and specifically, its section corresponding to the first trajectory:
+
+![alt text](https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/11_ex1_question2_velocity_traj_2_bonus.png "Unintentional linear velocity")
+
+**Trajectory 3:**
+
+Intended rotation | Actual rotation
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/12_ex1_question2_rotation_traj_3.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/14_ex1_question2_rotation_traj_3.png" width="400"/>
+
+Intended angular velocity | Actual angular velocity
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/13_ex1_question2_angular_traj_3.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/15_ex1_question2_angular_traj_3.png" width="400"/>
 
 Finally, similar observations to the first trajectory were made.
 
 ### Question 3
 
-For this part of the exercise, an **automatic control** algorithm was implemented, to test a method that uses feedback, with the same starting and final position/orientation. The parameters were chosen conservatively, but without causing massive delays until stabilization. The resulting plots are given below, with the only peculiar detail being that because ```cmd_vel/angular/z``` doesn't start at 0, the value read from ```/odom/twist/twist/angular/z``` has to immediately spike from 0, which would likely cause issues in real-life testing.
+For this part of the exercise, an **automatic control** algorithm was implemented, to test a method that uses feedback, with the same starting and final position/orientation. The parameters were chosen conservatively, but without causing massive delays until stabilization. The resulting plots are given below, with the only peculiar detail being that because ```cmd_vel/angular/z``` doesn't start at 0, the value read from ```/odom/twist/twist/angular/z``` has to immediately spike from 0, which would likely cause issues in real-life testing. Something similar appears in the linear velocity plots.
 
-(placeholder for images)
+Angular velocity | Linear velocity
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/16_ex1_question3_angular.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/17_ex1_question3_linear.png" width="400"/>
+
+The other plots look normal.
+
+Rotation | Position
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/19_ex1_question3_rotation.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/18_ex1_question3_position.png" width="400"/>
 
 ## Exercise 2
 
@@ -92,7 +129,25 @@ Not especially worth mentioning, just setting a final orientation for the joints
 
 After designing a trajectory for each joint, so that each one of them ends up in a specific orientation, a comparison between the intended final result and simulated final result follows:
 
-(images, you know)
+**Trajectory of bottom joint:**
+
+Intended rotation | Actual rotation
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/20_ex2_question2_rotation_1.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/22_ex2_question2_rotation_1.png" width="400"/>
+
+Intended angular velocity | Actual angular velocity
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/21_ex2_question2_angular_1.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/23_ex2_question2_angular_1.png" width="400"/>
+
+**Trajectory of top joint:**
+
+Intended rotation | Actual rotation
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/24_ex2_question2_rotation_2.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/26_ex2_question2_rotation_2.png" width="400"/>
+
+Intended angular velocity | Actual angular velocity
+:------------------------------:|:-----------------------------:
+<img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/25_ex2_question2_angular_2.png" width="400"/> | <img src="https://github.com/deimosap/Trajectory-Implementation-in-ROS2/blob/main/images/27_ex2_question2_angular_2.png" width="400"/>
 
 Both the rate at which each joint develops angular velocity and the maximum velocity don't seem to correspond with the intended results. Fixes weren't found using a different clock for the value of time in the calculations of the trajectory, or limiting the execution time to the intended value. It's possible that the cause for this behavior is the controller used for assigning commands to each joint, which could limit the angular velocity they are allowed to reach, hence, leading to an inaccurate representation of each trajectory.
 
